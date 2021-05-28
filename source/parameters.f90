@@ -227,6 +227,8 @@ module parameters
   !  COOL_NONE: no radiative cooling
   !  COOL_TABLE: tabulated cooling function (temperature only)
   !  COOL_TABLE_METAL: tabulated cooling function (temperature and metallicity)
+  !  COOL_H
+  !  COOL_SCHURE: tabulated cooling function from Schure+2...
   integer, parameter :: cooling_type = COOL_NONE
 
   !> Filename with table of cooling coefficients
