@@ -238,48 +238,27 @@ subroutine calcTemp (pvars, temp)
   real, intent(in) :: pvars(neqtot)
   real, intent(out) :: temp
 
-  temp = pvars(5)/pvars(1)*(mu0*AMU*p_sc/d_sc/KB)
+  select case(eos_type)
 
-  if (temp.gt.ion_thres) then
-    temp = pvars(5)/pvars(1)*(mui*AMU*p_sc/d_sc/KB)
-  end if
+  case(EOS_ADIABATIC)
+    temp = pvars(5)/pvars(1)*(mu0*AMU*p_sc/d_sc/KB)
 
-!------------------
-  select case
-  case(COOL_H)
-    temp = pvars(5)/(2*pvars(1)-pvars(neqdyn+1))*(mu0*AMU*p_sc/d_sc/KB)
-  case (COOL_SCHURE)
+    if (temp.gt.ion_thres) then
+      temp = pvars(5)/pvars(1)*(mui*AMU*p_sc/d_sc/KB)
+    end if
+
+  case(EOS_H_RATE)
+    temp = pvars(5)/(2*pvars(1)-pvars(neqdyn+1))*(1.*AMU*p_sc/d_sc/KB)
+
+  case (EOS_CHEM)
     dentot = 0.
     do i = n1_chem, n1_chem+n_spec-1
       dentot = pvars(i) + dentot
     end do
     dentot = max(dentot, 1e-15)
-    temp   = pvars(5)/(2*pvars(1)-pvars(neqdyn+1))*(mu0*AMU*p_sc/d_sc/KB)
+    temp   = pvars(5)/(2*pvars(1)-pvars(neqdyn+1))*(1*AMU*p_sc/d_sc/KB)
+
   end select
-
-
-  ! if (eq_of_state == EOS_H_RATE) then
-  !   dentot=(2.*r-prim(neqdyn+1))
-  !   dentot=max(dentot,1e-15)
-  !   T=max(1.,(prim(5)/dentot)*Tempsc)
-  !   prim(5)=dentot*T/Tempsc
-  ! end if
-  !
-  ! if (eq_of_state == EOS_CHEM) then
-  !   !  Assumes that rho scaling is mu*mh
-  !   dentot = 0.
-  !   do i = n1_chem, n1_chem+n_spec-1
-  !     dentot = prim(i) + dentot
-  !   end do
-  !   dentot = max(dentot, 1e-15)
-  !   T=max(1.,(prim(5)/dentot)*Tempsc )
-  !
-  !   !T=(prim(5)/r)*Tempsc
-  !   prim(5) = dentot * T /Tempsc
-  ! end if
-
-!-------------------------
-
 
   return
 

@@ -20,7 +20,7 @@ contains
     integer :: i,j,k
     integer :: mark, nb, bID
 
-    dt_seconds = dt_CFL*tsc
+    dt_seconds = dt*t_sc
 
     do nb=1,nbMaxProc
       bID = localBlocks(nb)
@@ -101,8 +101,6 @@ contains
           call calcTemp (PRIM(bIndx,:,i,j,k), T)
           col=colf(real(T,8))               !# collisional ionization rate
           rec=alpha(real(T,8))              !# rad. recombination rate
-
-! necesito llamar a la subroutine que calcula las conservadas?
 
           y0=real( U(bIndx,neqdyn+1,i,j,k)/ U(bIndx,1,i,j,k), 8 )  !# neutral H fraction
           dh=real( U(bIndx,1,i,j,k), 8 )               !# H density

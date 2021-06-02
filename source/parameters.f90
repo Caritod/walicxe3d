@@ -227,7 +227,7 @@ module parameters
   !  COOL_NONE: no radiative cooling
   !  COOL_TABLE: tabulated cooling function (temperature only)
   !  COOL_TABLE_METAL: tabulated cooling function (temperature and metallicity)
-  !  COOL_H
+  !  COOL_H:
   !  COOL_SCHURE: tabulated cooling function from Schure+2...
   integer, parameter :: cooling_type = COOL_NONE
 
@@ -239,6 +239,17 @@ module parameters
   !! per timestep.
   ! This helps prevent negative pressure errors.
   real, parameter :: cooling_limit = 0.5
+
+  ! ============================================
+  ! Equation of state
+  ! ============================================
+
+  !> Equation of state Type
+  ! Currently recognized options:
+  !  EOS_ADIABATIC:
+  !  EOS_H_RATE:
+  !  EOS_CHEM:
+  integer, parameter :: eos_type = EOS_H_RATE
 
   ! ============================================
   ! ISM (base flow) Properties
